@@ -854,9 +854,9 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
         edgesMap &&
         hoveredNodeData !== edgeEndNode &&
         canCreateEdge &&
-        canCreateEdge(hoveredNodeData, edgeEndNode) &&
-        !edgesMap[mapId1] &&
-        !edgesMap[mapId2]
+        canCreateEdge(hoveredNodeData, edgeEndNode)
+        // !edgesMap[mapId1] &&
+        // !edgesMap[mapId2]
       ) {
         this.endDragEdge();
 
@@ -1451,6 +1451,7 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
         isSelected={this.isEdgeSelected(edge)}
         rotateEdgeHandle={rotateEdgeHandle}
         isBeingDragged={!!targetPosition}
+        isBackWard={edge.isBackWard}
       />
     );
   };
