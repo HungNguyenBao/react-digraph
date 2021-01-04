@@ -221,20 +221,73 @@ export function getPathDescription(
     true,
     viewWrapperElem
   );
+  let x0 = srcX - srcOff.xOff;
+  let y0 = srcY - srcOff.yOff;
+
+  let x1 = trgX - trgOff.xOff;
+  let y1 = trgY - trgOff.yOff;
+
+  if (edge.isBackWard) {
+    const extra = calculateExtra(x0, y0, x1, y1);
+
+    if ((x0 > x1) & (y0 > y1)) {
+      x1 -= extra.xL;
+      y1 += extra.yL;
+      x0 -= extra.xR;
+      y0 += extra.yR;
+    } else if ((x0 < x1) & (y0 < y1)) {
+      x1 -= extra.xR;
+      y1 += extra.yR;
+      x0 -= extra.xL;
+      y0 += extra.yL;
+    } else if ((x0 < x1) & (y0 > y1)) {
+      x0 -= extra.xL;
+      y0 += extra.yL;
+      x1 += extra.xR;
+      y1 -= extra.yR;
+    } else if ((x0 > x1) & (y0 < y1)) {
+      x0 -= extra.xR;
+      y0 += extra.yR;
+      x1 += extra.xL;
+      y1 -= extra.yL;
+    }
+  }
 
   const linePoints = [
     {
-      x: srcX - srcOff.xOff,
-      y: srcY - srcOff.yOff,
+      x: x0,
+      y: y0,
     },
     {
-      x: trgX - trgOff.xOff,
-      y: trgY - trgOff.yOff,
+      x: x1,
+      y: y1,
     },
   ];
 
   return getLine(linePoints);
 }
+
+const calculateExtra = (x0, y0, x1, y1) => {
+  const tanL1 = (y1 - y0) / (x1 - x0);
+  const tanL2 = 0.25;
+  const atanL3 = Math.PI / 2 - Math.atan(tanL1) - Math.atan(tanL2);
+  const xExtraL = Math.cos(atanL3) * Math.sqrt(425);
+  const yExtraL = Math.sin(atanL3) * Math.sqrt(425);
+
+  const tanR1 = Math.tan(Math.PI / 2 - Math.atan(tanL1));
+  const tanR2 = 0.25;
+  const atanR3 = Math.atan(tanR1) + Math.atan(tanR2);
+
+  const xExtraR = Math.cos(atanR3) * Math.sqrt(425);
+  const yExtraR = Math.sin(atanR3) * Math.sqrt(425);
+
+  return {
+    xL: xExtraL,
+    yL: yExtraL,
+    xR: xExtraR,
+    yR: yExtraR,
+  };
+};
 
 export function getTheta(pt1?: ITargetPosition | null, pt2?: ITargetPosition) {
   const xComp = (pt2?.x || 0) - (pt1?.x || 0);
