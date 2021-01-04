@@ -395,6 +395,11 @@ class Graph extends React.Component<IGraphProps, IGraphState> {
       source: sourceViewNode[NODE_KEY],
       target: targetViewNode[NODE_KEY],
       type,
+      isBackWard: graph.edges.find(
+        ed =>
+          ed.source == targetViewNode[NODE_KEY] &&
+          ed.target == sourceViewNode[NODE_KEY]
+      ),
     };
 
     // Only add the edge when the source node is not the same as the target

@@ -59,6 +59,7 @@ type IEdgeProps = {
   viewWrapperElem: HTMLDivElement,
   rotateEdgeHandle?: boolean,
   isBeingDragged: boolean,
+  isBackWard?: boolean,
 };
 
 function Edge({
@@ -73,6 +74,7 @@ function Edge({
   targetNode,
   nodeKey,
   isBeingDragged = false,
+  isBackWard = false,
 }: IEdgeProps) {
   const edgePathRef = useRef();
   const edgeOverlayRef = useRef();
