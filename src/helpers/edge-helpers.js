@@ -227,6 +227,26 @@ export function getPathDescription(
   let x1 = trgX - trgOff.xOff;
   let y1 = trgY - trgOff.yOff;
 
+  const calculateExtra = (x0, y0, x1, y1) => {
+    const tanL1 = (y1 - y0) / (x1 - x0);
+    const tanL2 = 0.25;
+    const atanL3 = Math.PI / 2 - Math.atan(tanL1) - Math.atan(tanL2);
+    const xExtraL = Math.cos(atanL3) * Math.sqrt(425);
+    const yExtraL = Math.sin(atanL3) * Math.sqrt(425);
+    const tanR1 = Math.tan(Math.PI / 2 - Math.atan(tanL1));
+    const tanR2 = 0.25;
+    const atanR3 = Math.atan(tanR1) + Math.atan(tanR2);
+    const xExtraR = Math.cos(atanR3) * Math.sqrt(425);
+    const yExtraR = Math.sin(atanR3) * Math.sqrt(425);
+
+    return {
+      xL: xExtraL,
+      yL: yExtraL,
+      xR: xExtraR,
+      yR: yExtraR,
+    };
+  };
+
   if (edge.isBackWard) {
     const extra = calculateExtra(x0, y0, x1, y1);
 
@@ -266,28 +286,6 @@ export function getPathDescription(
 
   return getLine(linePoints);
 }
-
-const calculateExtra = (x0, y0, x1, y1) => {
-  const tanL1 = (y1 - y0) / (x1 - x0);
-  const tanL2 = 0.25;
-  const atanL3 = Math.PI / 2 - Math.atan(tanL1) - Math.atan(tanL2);
-  const xExtraL = Math.cos(atanL3) * Math.sqrt(425);
-  const yExtraL = Math.sin(atanL3) * Math.sqrt(425);
-
-  const tanR1 = Math.tan(Math.PI / 2 - Math.atan(tanL1));
-  const tanR2 = 0.25;
-  const atanR3 = Math.atan(tanR1) + Math.atan(tanR2);
-
-  const xExtraR = Math.cos(atanR3) * Math.sqrt(425);
-  const yExtraR = Math.sin(atanR3) * Math.sqrt(425);
-
-  return {
-    xL: xExtraL,
-    yL: yExtraL,
-    xR: xExtraR,
-    yR: yExtraR,
-  };
-};
 
 export function getTheta(pt1?: ITargetPosition | null, pt2?: ITargetPosition) {
   const xComp = (pt2?.x || 0) - (pt1?.x || 0);
