@@ -837,7 +837,7 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
   };
 
   createNewEdge() {
-    const { canCreateEdge, nodeKey, onCreateEdge } = this.props;
+    const { canCreateEdge, onCreateEdge } = this.props;
     const { edgesMap, edgeEndNode, hoveredNodeData } = this.state;
 
     if (!hoveredNodeData) {
@@ -847,16 +847,11 @@ class GraphView extends React.Component<IGraphViewProps, IGraphViewState> {
     this.removeCustomEdge();
 
     if (edgeEndNode) {
-      const mapId1 = `${hoveredNodeData[nodeKey]}_${edgeEndNode[nodeKey]}`;
-      const mapId2 = `${edgeEndNode[nodeKey]}_${hoveredNodeData[nodeKey]}`;
-
       if (
         edgesMap &&
         hoveredNodeData !== edgeEndNode &&
         canCreateEdge &&
         canCreateEdge(hoveredNodeData, edgeEndNode)
-        // !edgesMap[mapId1] &&
-        // !edgesMap[mapId2]
       ) {
         this.endDragEdge();
 
